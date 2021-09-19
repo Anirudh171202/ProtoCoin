@@ -1,7 +1,7 @@
 # ProtoCoin
 ## Using Cryptocurrency for Science 
 
-![Screenshot](Screen Shot 2021-09-19 at 10.19.09 AM.png)
+![alt text](https://github.com/Anirudh171202/ProtoCoin/blob/main/Screen\ Shot\ 2021-09-19\ at\ 10.19.09 AM.png?raw=true)
 
 Cryptocurrency has great potential as a decentralized form of currency. However, each transaction on the blockchain involves a huge amount of computation which has a sizable carbon footprint in the form of electricity and electronic waste. What if we could make these operations fruitful?
 
