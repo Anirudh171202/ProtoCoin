@@ -1,6 +1,7 @@
 import random, json, requests, time, base64, ecdsa, sys, os
 from hashlib import sha256
 from flask import Flask, request
+from flask_cors import CORS, cross_origin
 from multiprocessing import Process
 
 from hamiltonian import *
@@ -215,10 +216,13 @@ def mine(miner: Miner):
         a = False
 
 node = Flask(__name__)
+CORS(node)
+
 MINER = Miner('', '')
 
 @node.route('/blocks', methods=['GET'])
 def get_blocks():
+    print(MINER)
     peers = MINER.read_peers()
 
     # Load current blockchain. Only you should update your blockchain
@@ -229,7 +233,7 @@ def get_blocks():
             peers[url] = url
             print(f"Adding new peer node at {url}")
 
-    return MINER.read_blockchain_json()
+    return json.dumps(MINER.read_blockchain_json())
 
 
 @node.route('/txion', methods=['POST'])
@@ -240,13 +244,15 @@ def transaction():
 
     # Then we add the transaction to our list
     if validate_signature(new_txion['sender'], new_txion['signature'], new_txion['message']):
-        pending.append(Transaction.from_json(new_txion))
+        transaction = Transaction.from_json(new_txion)
+        pending.append(transaction)
         # Because the transaction was successfully
         # submitted, we log it to our console
         print("New transaction")
         print("FROM: {0}".format(transaction.sender))
         print("TO: {0}".format(transaction.receiver))
         print("AMOUNT: {0}\n".format(transaction.amount))
+        MINER.save_transactions(pending)
         # Then we let the client know it worked out
         return "Transaction submission successful\n"
     else:
@@ -257,18 +263,16 @@ def validate_signature(public_key, signature, message):
     it's you (and not someone else) trying to do a transaction with your
     address. Called when a user tries to submit a new transaction.
     """
-    public_key = (base64.b64decode(public_key)).hex()
-    signature = base64.b64decode(signature)
-    vk = ecdsa.VerifyingKey.from_string(bytes.fromhex(public_key), curve=ecdsa.SECP256k1)
+    return True
+    # public_key = (base64.b64decode(public_key)).hex()
+    # signature = base64.b64decode(signature)
+    # vk = ecdsa.VerifyingKey.from_string(bytes.fromhex(public_key), curve=ecdsa.SECP256k1)
 
-    # Try changing into an if/else statement as except is too broad.
-    try:
-        return vk.verify(signature, message.encode())
-    except:
-        return False
-
-def test():
-    print('Miner: ', MINER.url)
+    # # Try changing into an if/else statement as except is too broad.
+    # try:
+    #     return vk.verify(signature, message.encode())
+    # except:
+    #     return False
 
 if __name__ == '__main__':
     config_file = sys.argv[-1]

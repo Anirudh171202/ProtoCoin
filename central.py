@@ -1,9 +1,11 @@
 from flask import Flask, request
+from flask_cors import CORS, cross_origin
 import json
 
 miners = {}
 
 app = Flask(__name__)
+CORS(app)
 
 def miner_list():
     return json.dumps(list(miners.values()))

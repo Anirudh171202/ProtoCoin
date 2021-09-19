@@ -11,14 +11,19 @@ class Graph:
     def from_hash(hash):
         graph = Graph(N)
 
+        i = 0
+
         for byte in hash.digest():
+            if i > 25:
+                break
+
             u = byte >> 4
             v = byte & 0xf
-            # u = (byte & 0b111000) >> 3
-            # v = byte & 0b000111
             # print(bin(byte), u, v)
             # Use four bit sized numbers to represent nodes
             graph.connect(u, v)
+
+            i += 1
 
         return graph
 
