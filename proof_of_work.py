@@ -9,15 +9,9 @@ class Graph:
     def from_hash(hash):
         graph = Graph(N)
 
-        i = 0
-
-        while i < 512:
-            bytes = iter(hash.digest)
-            for byte in bytes:
-                graph.connect(byte, next(bytes))
-                i += 1
-
-            hash = sha256(hash.digest())
+        for byte in hash.digest():
+            # Use four bit sized numbers to represent nodes
+            graph.connect(byte & 0xf, byte >> 4)
 
         return graph
 
@@ -51,8 +45,6 @@ def find_hamiltonian_path(graph: Graph) -> list[int]:
     # is_connected returns True if u is None
     if dfs(None, graph, path, 0):
         return path
-    else:
-        return None
 
 # TODO implement correct fields for Transaction and fix the hashing function
 class Transaction:
@@ -78,7 +70,7 @@ class Block:
             u = v
         return True
 
-N = 256
+N = 16
 
 
 def proof_of_work(prev_hash: str, transactions: list[Transaction]):
@@ -87,7 +79,7 @@ def proof_of_work(prev_hash: str, transactions: list[Transaction]):
     for transaction in transactions:
         orig_hash.update(transaction)
 
-    proof_of_work = random.randint(0, 2**64)
+    proof_of_work = random.randint(0, 2**N)
 
     while True:
         hash = orig_hash.copy()
