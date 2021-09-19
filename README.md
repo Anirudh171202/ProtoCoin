@@ -5,7 +5,7 @@
 ![Screenshot](./frontend.png)
 
 
-##What is ProtoCoin?
+## What is ProtoCoin?
 Cryptocurrency has great potential as a decentralized form of currency.
 However, each transaction on the blockchain involves a huge amount of
 computation which has a sizable carbon footprint in the form of
