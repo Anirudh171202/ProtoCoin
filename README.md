@@ -9,4 +9,7 @@ We, at Protocoin, have come up with a unique approach to this problem: using cry
 Beyond gene assembly, this technology can be applied to many pressing problems in biology, astronomy, mathematics, computer science, and earth systems. Protocoin has the potential to be the most sustainable cryptocurrency the world has yet seen.
 
 
+##  What Technologies are being used?
+Some of the tech being used are Python, Javascript, Elliptic Curve Cryptography and Flask.
+
 
